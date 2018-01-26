@@ -15,7 +15,10 @@ in there). To encourage early reading of the spec, there is up to
 1% marks bounty for issues that are:
 - meaningful (i.e. they are a real issue that matters),
 - timely (they are highlighted before most people encounter them), and
-- useful (there is a proposed solution)._
+- useful (there is a proposed solution).
+The reporter generally has precedence in the choice of resolution,
+but others can comment on the issue as well before it is resolved.
+_
 
 Overview
 ========
