@@ -1,18 +1,23 @@
 *This is not a lab, nor is it anything specific to writing compilers, but
 rather a guide to help you debug programs.*
 
-It is inevitable you will bump into bugs in your code (eg: random
-segmentation faults). It helps to know about the existence of various
-tools that will help you in debugging.
+It is inevitable that you will bump into bugs in your code (eg: random
+segmentation faults). It is thus helpful to know what tools exist
+that can help you in debugging your programs.
 
-This document is, by no means, a thorough guideline on the available tools,
-but rather, a introductory document. In other words, I am saying "these
-tools exist and here's roughly what they do. There are decent resources
-available in the internet to figure out what features to do they have. The
-internet is your best friend." It is likely you will spend at least an hour
-or two going through this whole document, but it is likely to save you many
-more hours than that down the line (not just for this assessment, but for
-pretty much all code you write in the future).
+This document is by no means a thorough guideline, but rather, a introductory
+document to the arsenal of tools available to you. This document therefore does
+not expect for you to fully understand the intricacies of using these tools,
+but rather aims to help you develop a better understanding of what is available
+and provide a preview of some of the simpler things that can be done to help
+debug your code. As with learning any programming skills, there are many
+resources online to help you on the way so long as you know what you're
+searching for.
+
+
+Note: It is likely for you to spend at least an hour or two to go through this
+entire document, but doing so will likely save you many more hours down the
+line.
 
 For simplicity, I will be assuming that you are in a
 [Unix](https://en.wikipedia.org/wiki/Unix)-based environment.
@@ -52,8 +57,8 @@ fyquah@olaf: debugging $ ./example-backtrace-3
 Segmentation fault
 ```
 
-Having a backtraces is incredibly helpful, as it aids you in pinpointing where
-did the program crash. To get something similar in C/C++:
+Having a backtraces is incredibly helpful, as it helps you pinpoint where in
+the code did the program crash. To get something similar in C/C++:
 
 - Make sure you compile your object files with the `-g` flag. Read the g++'s
   manual pages (`man g++`) to see what this flag does. There are many ways
@@ -62,21 +67,24 @@ did the program crash. To get something similar in C/C++:
   understand how DWARF works, but nevertheless,
   [this introduction on DWARF](http://dwarfstd.org/doc/Debugging%20using%20DWARF-2012.pdf)
   is quite an entertaining read)
-- Compilers allows you to compile your code with different level of
-  optimisations, like `-O0` for fast compilation, `-O3` with agressive
-  optimisation. DO NOT compile with `-O3`. Debuggers will still work,
-  it is unlikely to yield very useful information.
+- Compilers allow you to compile your code with different levels of
+  optimisation, e.g. `-O0` for fast compilation or `-O3` for agressive
+  optimisation. When debugging, DO NOT compile with `-O3`. While debuggers may still work,
+  they will most likely not yield much useful information.
 - Execute your binary with a [debugger](https://en.wikipedia.org/wiki/Debugger)
 
 Your choice of debuggers are as follows:
 
-- On Linux, the GNU debugger (commonly referred to as gdb) should work out
-  of the box. The EE lab machines are setup with gdb. Most distributions
-  have gdb as part of their package managers.
-- On MacOS, you can either use lldb, using this
+- On Linux, the GNU debugger (commonly referred to as `gdb`) should work out
+  of the box. The EE lab machines are setup with `gdb`. However, should you need
+  to install it yourself, most Linux distributions will have `gdb` as part of their
+  package managers and can easily be installed using `apt-get`.
+- On MacOS, you can either use `lldb`, using this
   [command translation table](https://lldb.llvm.org/lldb-gdb.html)
-  You can also try installing gdb and
-  [code sign it](https://gist.github.com/gravitylow/fb595186ce6068537a6e9da6d8b5b96d).
+  OR you can also try installing `gdb` and
+  [code signing it](https://gist.github.com/gravitylow/fb595186ce6068537a6e9da6d8b5b96d).
+  It is recommended to stick with `lldb` as code signing `gdb`
+  can be a troublesome process.
 
 *The following text will assume you are using gdb.*
 
@@ -117,9 +125,9 @@ Program received signal SIGSEGV, Segmentation fault.
 (gdb)
 ```
 
-There is a few things going on here:
+This follows the following steps: 
 
-- Start `gdb` whilist specifying the target binary (and optionally
+- Start `gdb` whilst specifying the target binary (and optionally
   command line arguments)
 - Call `run` to execute the program
 - Your program crashes (or suceededs, in which it you don't need to do
@@ -132,7 +140,7 @@ There is a few things going on here:
 In your compiler, you are most likely going to pass your compilation source
 from stdin. To `run` with a file as stdin, call `run <compilation_source.c`.
 To call gdb with a set of command line arguments, add them after the
-binary in gdb args. eg: `gdb --args ./hello 1 2 3`.
+binary in gdb args with the `--args` flag. eg: `gdb --args ./hello 1 2 3`.
 
 There is a lot more you can do with  gdb, like printing variables, calling
 functions, inserting breakpoints or even manually step through your code.
@@ -178,10 +186,10 @@ sessions.
 
 ## Valgrind
 
-[Valgrind](http://valgrind.org) is a dynamic analysis tool to detect various
+[Valgrind](http://valgrind.org) is a dynamic analysis tool to help with various
 issues, such as threading bugs, memory management issues, cache-profiling
-and heap-profiling. We are primarily interested in memory checking (Memcheck),
-the dynamic analysis that helps us detect memory errors. Valgrind is available
+and heap-profiling. We are primarily interested in memory checking (Memcheck)
+using dynamic analysis that helps us detect memory errors. Valgrind is available
 in most linux distributions.
 
 Consider the example in [example-leak.c](./example-leak.c). There are two
@@ -201,12 +209,12 @@ fyquah@olaf: debugging $ ./example-leak
     7
 ```
 
-There is various explaination you can give to why this program doesn't
+There are various explainations you can give as to why this program doesn't
 crash, but this is not a behaviour you should not rely upon. (
 [This stackoverflow post](https://stackoverflow.com/questions/8029584/why-does-malloc-initialize-the-values-to-0-in-gcc/8029624#8029624)
-gives insight to why the values are zero-ed out as to why there wasn't a
-segmentation fault, try to recall how memory and page tables are organised
-in an operating system.) To rectify this memory problem, we can use valgrind
+gives insight as to why the values are zero-ed out and why there wasn't a
+segmentation fault. Try to recall how memory and page tables are organised
+in an operating system). To rectify this memory problem, we can use valgrind
 to diagnose the source of the problem:
 
 
@@ -262,7 +270,7 @@ fyquah@olaf: debugging $ valgrind ./example-leak
 
 There are two main things happening:
 
-1. There are two error messages about address with an incorrect amount of 
+1. There are two error messages about the addresses with an incorrect amount of 
    memory allocated. This is an extremely good demonstration of the power of
    valgrind - (a) It tells you when. (Thought exercise: Where did the numbers,
    "Address 0x5203228 is 4 bytes" and "Address 0x5203230 is 12 bytes"
@@ -270,7 +278,7 @@ There are two main things happening:
 2. Memory leak (as expected), as we are not de-allocating memory ourselves.
 
 You might be curious _why_ this even works, it is possible that the memory
-location allocated by followed by the heap-allocated memory location is
+location allocated by ****** followed by the heap-allocated memory location is ******
 
 Let's fix the `malloc` call, then see what happens:
 
@@ -320,12 +328,12 @@ fyquah@olaf: debugging $ valgrind ./example-leak
 ==7892== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
 ```
 
-This is conditional statement in line 50 of `example-leak.c` is dependent
+Here, the conditional statement in line 50 of `example-leak.c` is dependent
 on an uninitialised value. This problem is admitedly harder to debug with
 valgrind alone and it is more likely that gdb will be more useful
 (when it crashes).
 
-Anyway, if we fix the assignments (by assigning `n5->left` and `n5->right`
+Anyways, if we fix the assignments (by assigning `n5->left` and `n5->right`
 to NULL), we are left with:
 
 ```bash
@@ -359,13 +367,13 @@ fyquah@olaf: debugging $ valgrind ./example-leak
 ==8192== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
 
-The only problem left will be memory leaks. It is not reported as an error,
-because there are often times when heap memory freed simply by program
+The only problem left will be memory leaks. It is not reported as an error
+because it is often the case that heap memory freed simply by program
 termination is sufficient.
 
 Unless you are writing your compiler in C (or C++ that looks like C), the
-main avenue you will bump into the memory block size issue is the following
-type of code:
+main avenue in which you will bump into the memory block size issue is in the
+following type of code:
 
 ```C++
 class Statement : public Node {
@@ -381,10 +389,10 @@ some_function()
 ```
 
 In most cases, you actually don't know what you are doing. For that reason,
-you really should avoid such casts where you can. Unfortunately, compiler
+you really should avoid such casts when you can. Unfortunately, compiler
 authors, inevitably, write compilers with a lot of hand-maintained
 invariants. When you see yourself writing a type-cast as such in your code,
-it is worth asking yourself if it is possible to modify your code slightly
+it is worth asking yourself whether it is possible to modify your code slightly
 to avoid this cast altogether. If that's not trivially possible and you have
 to perform type-casting, use `static_cast<>` or `dynamic_cast<>`
 (See [this stackoverflow post](https://stackoverflow.com/a/1255015)
@@ -392,29 +400,29 @@ for an explaination on their differences).
 
 ## Static Analysis
 
-Valgrind and GDB falls under the category of dynamic analysis, that is you
-run the program and use runtime information to look for errors. Another
-common form of program analysis is [static analysis](https://en.wikipedia.org/wiki/Static_program_analysis),
-that is a form of check that tries to find problems in your code without
-executing it. There are a lot of such tools available (for free!) to perform
-such analysis, some are built into modern IDEs such as XCode while some
+Valgrind and GDB falls under the category of dynamic analysis, where 
+the program is run and information gained at runtime is used to search for errors.
+Another common form of program analysis is [static analysis](https://en.wikipedia.org/wiki/Static_program_analysis),
+where the analysers checks for problems in your code without
+executing it. There are a lot of tools available (for free!) to perform
+such types of analysis. Some are built into modern IDEs such as XCode, while 
 others require some form of setup. We will limit our discussion to one
 specific tool, the [clang static analyser](https://clang-analyzer.llvm.org/).
 
 The clang static analyser generates a really nice web UI for you to navigate
-through the errors. Static analyser tools, in general, have very low
-false positive rates. That is, it may not necessarily report all errors,
-but all errors it reports are very likely to be genuine errors.
+through errors. Static analyser tools in general have very low
+false positive rates. That is, they may not necessarily report all errors,
+but all errors they report are very likely to be genuine errors.
 
-Setting up the clang static analyser, it is surprisingly simple:
+Setting up the clang static analyser is surprisingly simple:
 
 0. Install the `clang` and `llvm` toolchains on your local setup (This is
    already done in the lab machines)
-1. `scan-build make your_make_target`
+1. Run `scan-build make your_make_target`
 2. Wait for compilation. You will notice that compilation is noticeably
-   slower due to static analysis running simultaneously.
-3. You will get a message that tells you how many errors it has found and
-   how to view them.
+   slower due to the static analyser running simultaneously to the compiler.
+3. You will get a message telling you how many errors were found and how to
+   view them.
 4. You can either call `scan-view` as instructed, or simply navigate to
    `/tmp/scan-build-XXXXXXX/index.html` on your web browser.
 
