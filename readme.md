@@ -1,6 +1,13 @@
 2017/2018 Compilers Coursework
 ==============================
 
+Updates
+=======
+
+**Debugging HOWTO** : @fyquah95 (the EIE4 UTA who you may have met in labs) wrote
+a ["getting started" guide for debugging/gdb"](debugging/README.md), which you
+may find useful.
+
 Meta-comment
 ============
 
