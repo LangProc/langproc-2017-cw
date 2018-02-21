@@ -59,6 +59,7 @@ int f(int x)
 }
 ```
 into the python:
+```
 def f(x):
     return x*x
 ```
@@ -86,7 +87,7 @@ def f(x):
 Formative submission
 --------------------
 
-For the formative submission on 20th of Feb, the goal is to get
+For the formative submission on 27th of Feb at 10:00, the goal is to get
 as much of the parser and AST working as you can, as then it is
 possible to critique your AST and overall approach. If you have
 some code-gen working, then so much the better, but parsing and
