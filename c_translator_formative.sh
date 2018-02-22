@@ -28,7 +28,7 @@ for i in ${input_dir}/*.c ; do
     REF_C_OUT=$?
     
     # Run the reference python version
-    python ${input_dir}/$base.py
+    python3 ${input_dir}/$base.py
     REF_P_OUT=$?
     
     if [[ ${have_compiler} -eq 0 ]] ; then
