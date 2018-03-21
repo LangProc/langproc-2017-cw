@@ -33,22 +33,24 @@ Overview
 There is a single assessed code deliverable, which is due on Tue 27th March at 22:00.
 This deliverable contains three components:
 
-- [*Test suite*](c_test_suite.md) (10%): Each submission must contain a set of test programs which 
+- [*Test suite*](c_test_suite.md) (14.3%): Each submission must contain a set of test programs which 
   are able to determine whether a given compiler implements certain C language
   features correctly.
 
-- [*C-translator*](c_translator.md) (20%) : Your compiler will be able to translate a sub-set of C
+- [*C-translator*](c_translator.md) (28.6%) : Your compiler will be able to translate a sub-set of C
   into equivalent Python. This allows each submission to demonstrate lexing and
   parsing functionality, even if the code generation is weak.
 
-- [*C-compiler*](c_compiler.md) (30%) : This is a compiler from C to MIPS assembly.
+- [*C-compiler*](c_compiler.md) (42.8%) : This is a compiler from C to MIPS assembly.
+
+_Note that components have been reweighted to reflect the lack of the tests._
   
 In all cases, the source language is pre-processed C90. The target environment
 is Ubuntu 16.04, so the lab Ubuntu distribution, or equivalently an
 Ubuntu 16.04 VM as configured in the attached Vagrantfile. If there is any conflict,
 then the VM has precedence.
 
-Associated with all deliverables is [a time-tracking/project management component](management.md) (10%).
+Associated with all deliverables is [a time-tracking/project management component](management.md) (14.3%).
 This will be updated as you go along, but the final version is due on Fri 30th March at 22:00, then
 will be assessed orally at the start of Summer term.
 
